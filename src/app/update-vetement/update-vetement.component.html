@@ -1,0 +1,63 @@
+<div class="container">
+  <div>
+    <h2>Modifier Vetement :</h2>
+  </div>
+  <form>
+    <div class="col-sm-2 col-md-2 col-lg-2">
+      <label>ID Vetement</label>
+      <input
+        readonly
+        type="text"
+        [(ngModel)]="currentVetement.idVet"
+        name="idVet"
+        class="form-control"
+      />
+    </div>
+    <div class="col-sm-4 col-md-4 col-lg-4">
+      <label>Marque</label>
+      <input
+        type="text"
+        [(ngModel)]="currentVetement.marqueVet"
+        name="marqueVet"
+        class="form-control"
+      />
+    </div>
+    <div class="col-sm-2 col-md-2 col-lg-2">
+      <label>Prix</label>
+      <input
+        type="number"
+        [(ngModel)]="currentVetement.prixVet"
+        name="prixVet"
+        class="form-control"
+      />
+    </div>
+    <div class="col-sm-4 col-md-4 col-lg-4">
+      <label>Date Achat</label>
+      <input
+        type="date"
+        [ngModel]="currentVetement.dateAchat | date : 'yyyy-MM-dd'"
+        (ngModelChange)="currentVetement.dateAchat = $event"
+        name="dateEmbauche"
+        class="form-control"
+      />
+    </div>
+    <div class="col-sm-4 col-md-4 col-lg-4">
+      <label>Boutique</label>
+      <select
+        class="form-control form-control-lg"
+        id="idBou"
+        name="idBou"
+        [(ngModel)]="updatedBouId"
+      >
+        <option *ngFor="let bou of boutiques" [value]="bou.idBou">
+          {{ bou.nomBou }}
+        </option>
+      </select>
+    </div>
+    <div class="mt-2">
+      <button type="submit" (click)="updateVetement()" class="btn btn-success">
+        Modifer
+      </button>
+    </div>
+  </form>
+</div>
