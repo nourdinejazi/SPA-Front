@@ -12,7 +12,7 @@ import { VetementGuard } from './vetement.guard';
 
 const routes: Routes = [
   {path: 'vetements', component:VetementsComponent},
-  {path: 'add-vetements', component: AddVetementsComponent, canActivate:[VetementGuard]},
+  {path: 'add-vetements', component: AddVetementsComponent},
   {path:'update-vetement/:id', component: UpdateVetementComponent},
   {path:'rechercheParBoutique', component: RechercheParBoutiqueComponent},
   {path: "rechercheParMarque", component : RechercheParMarqueComponent},

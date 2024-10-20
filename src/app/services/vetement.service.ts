@@ -4,6 +4,7 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Vetement } from '../modele/vetements.modele';
 import { Boutique } from '../modele/boutique.model';
 import { BoutiqueWrapper } from '../modele/BoutiqueWrapped.model';
+import { AuthService } from '../auth.service';
  const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };
@@ -16,19 +17,32 @@ export class VetementService {
   vetement!: Vetement;
   vetements!: Vetement[]; //un tableau de chînes de caractères
   boutiques!: Boutique[];
-  constructor(private http: HttpClient) {}
+  constructor(private http: HttpClient, private authService: AuthService) {}
 
   listeVetement(): Observable<Vetement[]> {
-    return this.http.get<Vetement[]>(this.apiURL);
+    let jwt = this.authService.getToken();
+    jwt = 'Bearer ' + jwt;
+    let httpHeaders = new HttpHeaders({ Authorization: jwt });
+    return this.http.get<Vetement[]>(this.apiURL + '/all', {
+      headers: httpHeaders,
+    });
   }
 
-  ajouterVetement(empl: Vetement): Observable<Vetement> {
-    return this.http.post<Vetement>(this.apiURL, empl, httpOptions);
+  ajouterVetement(vet: Vetement): Observable<Vetement> {
+    let jwt = this.authService.getToken();
+    jwt = 'Bearer ' + jwt;
+    let httpHeaders = new HttpHeaders({ Authorization: jwt });
+    return this.http.post<Vetement>(this.apiURL + '/addvet', vet, {
+      headers: httpHeaders,
+    });
   }
 
-  supprimerVetement(id: number | undefined) {
-    const url = `${this.apiURL}/${id}`;
-    return this.http.delete(url, httpOptions);
+  supprimerVetement(id: number) {
+    const url = `${this.apiURL}/delvet/${id}`;
+    let jwt = this.authService.getToken();
+    jwt = 'Bearer ' + jwt;
+    let httpHeaders = new HttpHeaders({ Authorization: jwt });
+    return this.http.delete(url, { headers: httpHeaders });
   }
 
   trierVetements() {
@@ -44,24 +58,43 @@ export class VetementService {
   }
 
   consulterVetement(id: number): Observable<Vetement> {
-    const url = `${this.apiURL}/${id}`;
-    return this.http.get<Vetement>(url);
-  }
-  updateVetement(v: Vetement): Observable<Vetement> {
-    return this.http.put<Vetement>(this.apiURL, v, httpOptions);
+    const url = `${this.apiURL}/getbyid/${id}`;
+    let jwt = this.authService.getToken();
+    jwt = 'Bearer ' + jwt;
+    let httpHeaders = new HttpHeaders({ Authorization: jwt });
+    return this.http.get<Vetement>(url, { headers: httpHeaders });
   }
 
+  updateVetement(prod: Vetement): Observable<Vetement> {
+    let jwt = this.authService.getToken();
+    jwt = 'Bearer ' + jwt;
+    let httpHeaders = new HttpHeaders({ Authorization: jwt });
+    return this.http.put<Vetement>(this.apiURL + '/updatevet', prod, {
+      headers: httpHeaders,
+    });
+  }
+
+  listeBoutique(): Observable<BoutiqueWrapper> {
+    let jwt = this.authService.getToken();
+    jwt = 'Bearer ' + jwt;
+    let httpHeaders = new HttpHeaders({ Authorization: jwt });
+    return this.http.get<BoutiqueWrapper>(this.apiURLBou, {
+      headers: httpHeaders,
+    });
+  }
   listeBoutiques(): Observable<BoutiqueWrapper> {
     return this.http.get<BoutiqueWrapper>(this.apiURLBou);
   }
-  rechercherParBoutique(idBou: number): Observable<Vetement[]> {
-    const url = `${this.apiURL}/vetsbou/${idBou}`;
+  rechercherParBoutique(idCat: number): Observable<Vetement[]> {
+    const url = `${this.apiURL}/vetscat/${idCat}`;
     return this.http.get<Vetement[]>(url);
   }
+
   rechercherParMarque(marque: string): Observable<Vetement[]> {
     const url = `${this.apiURL}/vetMarque/${marque}`;
     return this.http.get<Vetement[]>(url);
   }
+
   ajouterBoutique(bou: Boutique): Observable<Boutique> {
     return this.http.post<Boutique>(this.apiURLBou, bou, httpOptions);
   }

@@ -20,7 +20,7 @@ export class VetementsComponent implements OnInit {
   
     let conf = confirm('Etes-vous sûr ?');
     if (conf)
-      this.vetementService.supprimerVetement(v.idVet).subscribe(() => {
+      this.vetementService.supprimerVetement(v.idVet!).subscribe(() => {
         console.log('Vetement supprimé');
         this.chargerVetements();
       });
