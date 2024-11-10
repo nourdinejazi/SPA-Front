@@ -11,6 +11,7 @@ export class AuthService {
   apiURL: string = 'http://localhost:8081/users';
   token!: string;
   private helper = new JwtHelperService();
+  public regitredUser: User = new User();
 
   // users: User[] = [
   //   { username: 'admin', password: '123', roles: ['ADMIN'] },
@@ -55,6 +56,21 @@ export class AuthService {
     return this.token;
   }
 
+  registerUser(user: User) {
+    return this.http.post<User>(this.apiURL + '/register', user, {
+      observe: 'response',
+    });
+  }
+
+  setRegistredUser(user: User) {
+    this.regitredUser = user;
+  }
+  getRegistredUser() {
+    return this.regitredUser;
+  }
+  validateEmail(code: string) {
+    return this.http.get<User>(this.apiURL + '/verifyEmail/' + code);
+  }
   // SignIn(user: User): Boolean {
   //   let validUser: Boolean = false;
   //   this.users.forEach((curUser) => {

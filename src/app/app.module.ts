@@ -5,7 +5,7 @@ import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
 import { VetementsComponent } from './vetements/vetements.component';
 import { AddVetementsComponent } from './add-vetements/add-vetements.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { UpdateVetementComponent } from './update-vetement/update-vetement.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { RechercheParBoutiqueComponent } from './recherche-par-boutique/recherche-par-boutique.component';
@@ -16,8 +16,10 @@ import { UpdateBoutiqueComponent } from './update-boutique/update-boutique.compo
 import { LoginComponent } from './login/login.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { TokenInterceptor } from './services/token.interceptor';
-
-
+import { RegisterComponent } from './register/register.component';
+import { VerifEmailComponent } from './verif-email/verif-email.component';
+import { ToastrModule } from 'ngx-toastr';
+import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 
 @NgModule({
   declarations: [
@@ -32,8 +34,19 @@ import { TokenInterceptor } from './services/token.interceptor';
     UpdateBoutiqueComponent,
     LoginComponent,
     ForbiddenComponent,
+    RegisterComponent,
+    VerifEmailComponent,
   ],
-  imports: [BrowserModule, AppRoutingModule, FormsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    AppRoutingModule,
+    FormsModule,
+    HttpClientModule,
+    ReactiveFormsModule,
+    BrowserAnimationsModule,
+
+    ToastrModule.forRoot(),
+  ],
   providers: [
     { provide: HTTP_INTERCEPTORS, useClass: TokenInterceptor, multi: true },
   ],

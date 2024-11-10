@@ -9,23 +9,29 @@ import { ListeBoutiquesComponent } from './liste-boutiques/liste-boutiques.compo
 import { LoginComponent } from './login/login.component';
 import { ForbiddenComponent } from './forbidden/forbidden.component';
 import { VetementGuard } from './vetement.guard';
+import { RegisterComponent } from './register/register.component';
+import { VerifEmailComponent } from './verif-email/verif-email.component';
 
 const routes: Routes = [
-  {path: 'vetements', component:VetementsComponent},
-  {path: 'add-vetements', component: AddVetementsComponent},
-  {path:'update-vetement/:id', component: UpdateVetementComponent},
-  {path:'rechercheParBoutique', component: RechercheParBoutiqueComponent},
-  {path: "rechercheParMarque", component : RechercheParMarqueComponent},
-  {path: "listeBoutiques", component: ListeBoutiquesComponent},
-  {path: 'login', component: LoginComponent},
-  {path: 'app-forbidden', component: ForbiddenComponent},
-
-  { path: "", redirectTo: "vetements", pathMatch: "full" },
-
+  { path: 'vetements', component: VetementsComponent },
+  {
+    path: 'add-vetements',
+    component: AddVetementsComponent,
+    canActivate: [VetementGuard],
+  },
+  { path: 'update-vetement/:id', component: UpdateVetementComponent },
+  { path: 'rechercheParBoutique', component: RechercheParBoutiqueComponent },
+  { path: 'rechercheParMarque', component: RechercheParMarqueComponent },
+  { path: 'listeBoutiques', component: ListeBoutiquesComponent },
+  { path: 'login', component: LoginComponent },
+  { path: 'register', component: RegisterComponent },
+  { path: 'verifEmail', component: VerifEmailComponent },
+  { path: 'app-forbidden', component: ForbiddenComponent },
+  { path: '', redirectTo: 'vetements', pathMatch: 'full' },
 ];
 
 @NgModule({
   imports: [RouterModule.forRoot(routes)],
-  exports: [RouterModule]
+  exports: [RouterModule],
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}
