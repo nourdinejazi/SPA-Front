@@ -8,6 +8,7 @@
           <th>prixVet</th>
           <th>dateAchat</th>
           <th>boutique</th>
+          <th>Image</th>
         </tr>
         <tbody *ngFor="let v of vetements">
           <tr>
@@ -16,6 +17,13 @@
             <td>{{ v.prixVet }}</td>
             <td>{{ v.dateAchat | date : "dd/MM/yyyy" }}</td>
             <td>{{ v.boutique?.nomBou }}</td>
+            <td>
+              <img
+                class="card-img-top img-responsive"
+                src="{{ v.imageStr }}"
+                style="height: 50px; width: 100px"
+              />
+            </td>
             <td>
               <a
                 *ngIf="authService.isAdmin()"

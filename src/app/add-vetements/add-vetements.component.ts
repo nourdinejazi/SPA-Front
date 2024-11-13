@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
- import { VetementService } from '../services/vetement.service';
- import { Router } from '@angular/router';
+import { VetementService } from '../services/vetement.service';
+import { Router } from '@angular/router';
 import { Boutique } from '../modele/boutique.model';
 import { Vetement } from '../modele/vetements.modele';
 @Component({
@@ -13,6 +13,9 @@ export class AddVetementsComponent implements OnInit {
   boutiques!: Boutique[];
   newIdBou!: number;
   newBoutique!: Boutique;
+  uploadedImage!: File;
+  imagePath: any;
+
   constructor(
     private vetementService: VetementService,
     private router: Router
@@ -22,16 +25,29 @@ export class AddVetementsComponent implements OnInit {
       this.boutiques = bouts._embedded.boutiques;
       console.log(bouts);
     });
-
-    }
+  }
   addVetement() {
     this.newVetement.boutique = this.boutiques.find(
       (bou) => bou.idBou == this.newIdBou
     )!;
+    console.log(this.newVetement);
     this.vetementService.ajouterVetement(this.newVetement).subscribe((vet) => {
-      console.log(vet);
- 
-      this.router.navigate(['vetements']);
+      this.vetementService
+        .uploadImageVet(this.uploadedImage, this.uploadedImage.name, vet.idVet!)
+        .subscribe((response: any) => {
+          this.router.navigate(['vetements']).then(() => {
+            window.location.reload();
+          });
+        });
     });
+  }
+
+  onImageUpload(event: any) {
+    this.uploadedImage = event.target.files[0];
+    var reader = new FileReader();
+    reader.readAsDataURL(this.uploadedImage);
+    reader.onload = (_event) => {
+      this.imagePath = reader.result;
+    };
   }
 }

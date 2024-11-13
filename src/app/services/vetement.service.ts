@@ -1,11 +1,12 @@
 import { Injectable } from '@angular/core';
- import { Observable } from 'rxjs';
+import { Observable } from 'rxjs';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { Vetement } from '../modele/vetements.modele';
 import { Boutique } from '../modele/boutique.model';
 import { BoutiqueWrapper } from '../modele/BoutiqueWrapped.model';
 import { AuthService } from '../auth.service';
- const httpOptions = {
+import { Image } from '../modele/Image.model';
+const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/json' }),
 };
 @Injectable({
@@ -32,6 +33,7 @@ export class VetementService {
     let jwt = this.authService.getToken();
     jwt = 'Bearer ' + jwt;
     let httpHeaders = new HttpHeaders({ Authorization: jwt });
+
     return this.http.post<Vetement>(this.apiURL + '/addvet', vet, {
       headers: httpHeaders,
     });
@@ -55,6 +57,17 @@ export class VetementService {
       }
       return 0;
     });
+  }
+
+  uploadImage(file: File, filename: string): Observable<Image> {
+    const imageFormData = new FormData();
+    imageFormData.append('image', file, filename);
+    const url = `${this.apiURL + '/image/upload'}`;
+    return this.http.post<Image>(url, imageFormData);
+  }
+  loadImage(id: number): Observable<Image> {
+    const url = `${this.apiURL + '/image/get/info'}/${id}`;
+    return this.http.get<Image>(url);
   }
 
   consulterVetement(id: number): Observable<Vetement> {
@@ -97,5 +110,22 @@ export class VetementService {
 
   ajouterBoutique(bou: Boutique): Observable<Boutique> {
     return this.http.post<Boutique>(this.apiURLBou, bou, httpOptions);
+  }
+
+  uploadImageVet(file: File, filename: string, idVet: number): Observable<any> {
+    const imageFormData = new FormData();
+    imageFormData.append('image', file, filename);
+    const url = `${this.apiURL + '/image/uplaodImageVet'}/${idVet}`;
+    return this.http.post(url, imageFormData);
+  }
+  supprimerImage(id: number) {
+    const url = `${this.apiURL}/image/delete/${id}`;
+    return this.http.delete(url, httpOptions);
+  }
+  uploadImageFS(file: File, filename: string, idProd: number): Observable<any> {
+    const imageFormData = new FormData();
+    imageFormData.append('image', file, filename);
+    const url = `${this.apiURL + '/image/uploadFS'}/${idProd}`;
+    return this.http.post(url, imageFormData);
   }
 }
