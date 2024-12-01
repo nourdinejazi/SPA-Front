@@ -13,8 +13,8 @@ const httpOptions = {
   providedIn: 'root',
 })
 export class VetementService {
-  apiURL: string = 'http://localhost:8080/vetements/api';
-  apiURLBou: string = 'http://localhost:8080/vetements/bou';
+  apiURL: string = 'http://localhost:8070/vetements/api';
+  apiURLBou: string = 'http://localhost:8070/vetements/bou';
   vetement!: Vetement;
   vetements!: Vetement[]; //un tableau de chînes de caractères
   boutiques!: Boutique[];

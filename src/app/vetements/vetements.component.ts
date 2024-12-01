@@ -12,7 +12,7 @@ import { Boutique } from '../modele/boutique.model';
 export class VetementsComponent implements OnInit {
   vetements?: Vetement[];
   boutiques?: Boutique[];
-  apiurl: string = 'http://localhost:8080/vetements/api';
+  apiurl: string = 'http://localhost:8070/vetements/api';
   constructor(
     private vetementService: VetementService,
     public authService: AuthService

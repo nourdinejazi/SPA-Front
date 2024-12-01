@@ -39,6 +39,7 @@ export class RegisterComponent implements OnInit {
         this.router.navigate(['/verifEmail']);
       },
       error: (err: any) => {
+        this.loading = false;
         if ((err.status = 400)) {
           this.err = err.error.message;
         }
